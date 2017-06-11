@@ -1,9 +1,16 @@
+/**
+ * Webpack loaders for es2015 project.
+ * 
+ * @author Philippe Wronski <philippe.wronski@gmail.com
+ */
+
 // The path module provides utilities for working with file and directory paths.
 var path = require('path');
 
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = [
+    // Compile all es2015 files into es5 files.
     {
         test: /\.js$/,
         exclude: /bower_components/,
@@ -11,14 +18,16 @@ module.exports = [
             { loader: 'babel-loader', options: {sourceMaps: true} }
         ]
     },
+    // Copy all css files used in modules into dist directory.
     {
         test: /\.css$/,
         exclude: /vendor/,
         use: [
             { loader: 'style-loader/url' },
-            { loader: 'file-loader?name=css/[name].[ext]'},
+            { loader: 'file-loader?name=dist/css/[name].[ext]'},
         ]
     },
+    // ??
     {
         test: /\.css$/,
         include: [
@@ -29,6 +38,7 @@ module.exports = [
             { loader: 'css-loader', options: { root: '.' }},
         ]
     },
+    // Extract css from html file into js file.
 //    {
 //        test: /\.css$/,
 //        use: ExtractTextPlugin.extract({
@@ -36,6 +46,7 @@ module.exports = [
 //            use: "css-loader"
 //        })
 //    },
+    // Compile scss files into css and include it in html file.
 //    {
 //        test: /\.scss$/,
 //        use: [
@@ -44,6 +55,7 @@ module.exports = [
 //            { loader: 'sass-loader' }
 //        ]
 //    },
+    // Compile scss files into css and extract css from html file into js file.
     {
         test: /\.scss$/,
         use: ExtractTextPlugin.extract({
@@ -56,33 +68,32 @@ module.exports = [
             publicPath: '../'
         })
     },
+    // Load html file into dist directory and transform url() into require.
     {
         test: /\.html$/,
         exclude: /node_modules/,
         loader: 'html-loader'
-    }, {
+    },
+    // Copy all .woff* font files into dist directory.
+    {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         use: [
             { loader: 'url-loader?limit=10000&mimetype=application/font-woff'},
-            { loader: 'file-loader?name=css/fonts/[name].[ext]' }
+            { loader: 'file-loader?name=dist/css/fonts/[name].[ext]' }
         ]
-    }, {
+    },
+    // Copy all other font files into dist directory.
+    {
         test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: 'file-loader?name=css/fonts/[name].[ext]'
     },
+    // Copy all images files into dist directory.
     {
         test: /\.(jpg|jpeg|png|gif)$/,
         exclude: /node_modules/,
+        // Add image into require.
 //        loader: 'url-loader'
-        loader: 'file-loader?name=images/[name].[ext]'
+        // Add image into dist directory
+        loader: 'file-loader?name=dist/images/[name].[ext]'
     }
-//    {
-//        test: /\.jpg$/,
-//        exclude: /node_modules/,
-//        loader: 'file'
-//    }, {
-//        test: /\.png$/,
-//        exclude: /node_modules/,
-//        loader: 'url'
-//    }
 ];

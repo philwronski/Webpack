@@ -2,7 +2,6 @@
   "name": "Webpack",
   "version": "1.0.0",
   "description": "Webpack configuration for es2015 project",
-  "main": "/",
   "scripts": {
     "start": "webpack --config webpack/webpack.dev.js --watch --define process.env.NODE_ENV='development'",
     "build": "webpack --config webpack/webpack.build.js -p"
